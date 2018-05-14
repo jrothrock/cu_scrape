@@ -2,7 +2,9 @@
 
 ## What is this for?
 
-Scrape CU's research faculty and send an email pertaining to: https://github.com/jrothrock/cu_grades. In order to get the scraper student to work, you have to go to linkedin and copy the 'li_at' cookie into the cookie variable found in the main.py. Then set the students variable in main to true, and change the amount in the scraper_students.py.
+Scrapes CU's research faculty and sends an email pertaining to: https://github.com/jrothrock/cu_grades. 
+
+In order to get the scraper for students to work, you have to go to linkedin and copy the 'li_at' cookie into the `cookie` variable found in the `main.py`. Then set the `students` variable in `main.py` to 'True', and change the `amount` variable in the `scraper_students.py`.
 
 Credit to austinoboyle for his [linkedin scraping solution](https://github.com/austinoboyle/scrape-linkedin-selenium).
 

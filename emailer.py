@@ -16,14 +16,9 @@ class Emailer(object):
          self.scopes = 'https://www.googleapis.com/auth/gmail.send'
          self.client_secret_file = 'client_secret.json'
          self.application_name = 'Send CU Email'
-
+         
     def get_credentials(self):
-        home_dir = os.path.expanduser('~')
-        credential_dir = os.path.join(home_dir, '.credentials')
-        if not os.path.exists(credential_dir):
-            os.makedirs(credential_dir)
-        credential_path = os.path.join(credential_dir,
-                                    'gmail-python-email-send.json')
+        credential_path = './credentials.json'
         store = oauth2client.file.Storage(credential_path)
         credentials = store.get()
         if not credentials or credentials.invalid:
@@ -126,14 +121,12 @@ class Emailer(object):
         try:
             to = "jack.rothrock@colorado.edu"
             sender = "jack.rothrock@colorado.edu"
-            subject = "CU Classes Ranked By GPA. Find The 'Easiest' Classes For Subjects/Cores. Summer Research."
-            msgHtml = "I created an Excel application, which sorts the publicly available FCQ Data, ranking the classes from highest to lowest GPA for core sections - ie, human diversity, ideals and values, etc. I wrote an article with key screenshots, and other information; including interesting figures for graduation rates - like how a dorm impacts your graduation rates, and graduation rates for those with less than a 2.8 compared to those with above a 3.2.<br><br> The article can be found here: <a href='https://jackrothrock.com/uni-of-colorado-grade-distribution/'>https://jackrothrock.com/uni-of-colorado-grade-distribution/</a><br><br>The code for the Excel project can be found here: <a href='https://github.com/jrothrock/cu_grades'>https://github.com/jrothrock/cu_grades</a><br><br> And a direct download to the Excel file can be found here: <a href='https://www.dropbox.com/s/zlipro1btos075b/CU_Class_Helper.xlsm?dl=0'>https://www.dropbox.com/s/zlipro1btos075b/CU_Class_Helper.xlsm?dl=0</a><br><br>Code for the scraping of CU research faculty and sending of email: <a href='https://github.com/jrothrock'>https://github.com/jrothrock</a><br><br><br><br><strong>Also, I'm looking for a summer research position. I'm currently doing one for another teacher, but it's only 10 hours a week. I'm mainly looking for a paid position, but if it's super interesting (or where I'd learn a lot) I'd consider non paid. Included is my resume.</strong><br><br>Also, FWIW, this hasn't/wont be sent to other students.<br>"
-            msgPlain = "Hi\nPlain Email"
-            # SendMessage(sender, to, bcc, subject, msgHtml, msgPlain)
-            # Send message with attachment: 
-            self.SendMessage(sender, to, bcc, subject, msgHtml, msgPlain, './Jack Rothrock\'s Resume.pdf')
+            subject = "CU Classes Ranked By GPA - Find The 'Easiest' Classes For Subjects/Cores."
+            msgHtml = "Using the FCQ data, I created an Excel application which ranks the classes for each core subject from highest GPA to lowest GPA - ie, human diversity, ideals and values, etc. I wrote an article highlighting these findings (with pictures of all classes and gpas for each subject), as well as other interesting findings - like how a dorm impacts your graduation rates, and graduation rates for those with less than a 2.8 compared to those with above a 3.2.<br><br> The article can be found here: <a href='https://jackrothrock.com/uni-of-colorado-grade-distribution/'>https://jackrothrock.com/uni-of-colorado-grade-distribution/</a><br><br>The code for the Excel project can be found here: <a href='https://github.com/jrothrock/cu_grades'>https://github.com/jrothrock/cu_grades</a><br><br>A direct download to the Excel file can be found here: <a href='https://www.dropbox.com/s/zlipro1btos075b/CU_Class_Helper.xlsm?dl=0'>https://www.dropbox.com/s/zlipro1btos075b/CU_Class_Helper.xlsm?dl=0</a><br><br>And code for the scraping of CU research faculty and sending of email: <a href='https://github.com/jrothrock'>https://github.com/jrothrock/cu_scrape</a><br><br><br><br><strong>Also, I'm looking for a summer research position. </strong> I'm currently doing one for another teacher, but it's only 10 hours a week. I'm mainly looking for a paid position. Included is my resume.<br><br>Also, FWIW, this hasn't/wont be sent to other students.<br>"
+            msgPlain = "Using the FCQ data, I created an Excel application which ranks the classes for each core subject from highest GPA to lowest GPA - ie, human diversity, ideals and values, etc. I wrote an article highlighting these findings (with pictures of all classes and gpas for each subject), as well as other interesting findings - like how a dorm impacts your graduation rates, and graduation rates for those with less than a 2.8 compared to those with above a 3.2.\n\nThe article can be found here: https://jackrothrock.com/uni-of-colorado-grade-distribution/\n\nThe code for the Excel project can be found here: https://github.com/jrothrock/cu_grades\n\nA direct download to the Excel file can be found here: https://www.dropbox.com/s/zlipro1btos075b/CU_Class_Helper.xlsm?dl=0\n\nAnd code for the scraping of CU research faculty and sending of email: https://github.com/jrothrock/cu_scrape (https://github.com/jrothrock)\n\nALSO, I'M LOOKING FOR A SUMMER RESEARCH POSITION. I'm currently doing one for another teacher, but it's only 10 hours a week. I'm mainly looking for a paid position. Included is my resume.\n\nAlso, FWIW, this hasn't/wont be sent to other students."
+            return self.SendMessage(sender, to, bcc, subject, msgHtml, msgPlain, './Jack Rothrock\'s Resume.pdf')
         except Exception as ex:
-            print ex # do whatever you want for debugging.
+            print ex
             
     def __enter__(self):
         return self
@@ -142,4 +135,4 @@ class Emailer(object):
         return self
 
 # with Emailer() as email:
-    # email.Send()
+#     email.Send()

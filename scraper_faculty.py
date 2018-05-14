@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from shutil import copy2 as copy
+import time
 
 class ScraperFaculty(object):
     def __init__(self):
@@ -22,7 +23,8 @@ class ScraperFaculty(object):
     def scrape(self):
         url = "https://experts.colorado.edu/people?source=%7B%22query%22%3A%7B%22match_all%22%3A%7B%7D%7D%2C%22sort%22%3A%5B%7B%22_score%22%3A%7B%22order%22%3A%22desc%22%7D%7D%5D%2C%22from%22%3A0%2C%22size%22%3A2986%7D"
         self.driver.get(url)
-        wait = WebDriverWait(self.driver, 100).until(EC.visibility_of_element_located((By.TAG_NAME, "tr")))
+        time.sleep(5)
+        wait = WebDriverWait(self.driver, 100).until(EC.visibility_of_element_located((By.TAG_NAME, "tbody")))
 
         table_id = self.driver.find_element(By.ID, 'facetview_results')
         rows = table_id.find_elements(By.TAG_NAME, "tr")
@@ -53,4 +55,4 @@ class ScraperFaculty(object):
             self.driver.quit()
 
 # with ScraperFaculty() as scraper:
-    # scraper.scrape()
+#     scraper.scrape()

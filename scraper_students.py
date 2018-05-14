@@ -9,10 +9,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 from shutil import copy2 as copy
-
-# Proof of concept. It's also possible to get emails from the student directory by inputting half a lastname, and scraping all available students.
-    # not a bad way to verify the person too... This current way would just end up with more bounces - which would probably lead to more junk mail.
-
+"""
+It's also possible to get emails from the student directory by inputting half a lastname, and scraping all available students.
+Using the directory would be a great way to verify people found on linkedin. Would reduce bounced email, and ultimately, junk email.
+"""
 class ScraperStudent(object):
     def __init__(self, cookie=None, driver=webdriver.Chrome, scroll_pause=0.1, scroll_increment=300, timeout=10):
         if not cookie:
@@ -24,7 +24,6 @@ class ScraperStudent(object):
         self.scroll_increment = scroll_increment
         self.timeout = timeout
         self.driver.get('http://www.linkedin.com')
-        self.driver.set_window_size(1200, 1000)
         self.emails = []
         self.driver.add_cookie({
             'name': 'li_at',
@@ -70,6 +69,7 @@ class ScraperStudent(object):
         with open("./cu_students.txt","a+") as f:
             self.scrape_people(f)
             while start < (count / 10) and start < amount:
+                #basically retry at most 3 times if exception occurs.
                 for attempt in range(3):
                     try:
                         button = self.driver.find_element_by_xpath("//li[@class='page-list']//button[contains(.,'" + str(start) + "')]")
@@ -88,15 +88,8 @@ class ScraperStudent(object):
 
 
     def scroll_to_bottom(self):
-        """Scroll to the bottom of the page
-        Params:
-            - scroll_pause_time {float}: time to wait (s) between page scroll increments
-            - scroll_increment {int}: increment size of page scrolls (pixels)
-        """
-
         current_height = 0
         while True:
-            # Scroll down to bottom
             new_height = self.driver.execute_script(
                 "return Math.min({}, document.body.scrollHeight)".format(current_height + self.scroll_increment))
             if (new_height == current_height):
@@ -104,7 +97,6 @@ class ScraperStudent(object):
             self.driver.execute_script(
                 "window.scrollTo(0, Math.min({}, document.body.scrollHeight));".format(new_height))
             current_height = new_height
-            # Wait to load page
             time.sleep(self.scroll_pause)
 
     def __enter__(self):

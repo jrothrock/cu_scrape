@@ -3,10 +3,12 @@ from scraper_faculty import ScraperFaculty
 from scraper_students import ScraperStudent
 import os.path
 
-def main():
-    students = False
-    emails = getEmailsFaculty()
+data = []
 
+def main():
+    global data
+    students = False
+    
     if students:
         emails = getEmailsStudents()
     else:
@@ -21,23 +23,20 @@ def main():
             fout.writelines(data[400:])
 
 def getEmailsFaculty():
-    if os.path.exists('./cu_research_faculty_remaining.txt'):
-        return readEmails('./cu_research_faculty_remaining.txt')
-    else:
+    if os.path.exists('./cu_research_faculty_remaining.txt') == False:
         with ScraperFaculty() as sf:
-            return sf.scrape()
-        return readEmails('./cu_research_faculty_remaining.txt')
+            sf.scrape()
+    return readEmails('./cu_research_faculty_remaining.txt')
 
 def getEmailsStudents():
-    if os.path.exists('./cu_students_remaining.txt'):
-        return readEmails('./cu_students_remaining.txt')
-    else:
-        cookie = None
+    if os.path.exists('./cu_students_remaining.txt') == False:
+        cookie = "Change Me To The li_at Cookie!!!"
         with ScraperStudent(cookie) as ss:
             ss.scrape()
-        return readEmails('./cu_students_remaining.txt')
+    return readEmails('./cu_students_remaining.txt')
 
 def readEmails(file):
+    global data
     # I'm going to ignore memory efficiency. 
     with open(file, 'r') as fin:
         data = fin.read().splitlines(True)
